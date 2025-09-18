@@ -1,0 +1,181 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "red", "font": {"color": "black"}, "id": "Person_3", "label": "Person_3", "person_type": "suspect", "shape": "dot", "size": 54.230816082392735, "title": "\u003cb\u003ePerson_3\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 70\u003cbr\u003eCentrality: 10.17"}, {"color": "red", "font": {"color": "black"}, "id": "Person_4", "label": "Person_4", "person_type": "suspect", "shape": "dot", "size": 36.58620742800698, "title": "\u003cb\u003ePerson_4\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 74\u003cbr\u003eCentrality: 1.44"}, {"color": "red", "font": {"color": "black"}, "id": "Person_5", "label": "Person_5", "person_type": "suspect", "shape": "dot", "size": 43.59019734093007, "title": "\u003cb\u003ePerson_5\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 79\u003cbr\u003eCentrality: 4.14"}, {"color": "red", "font": {"color": "black"}, "id": "Person_6", "label": "Person_6", "person_type": "suspect", "shape": "dot", "size": 40.7043926452351, "title": "\u003cb\u003ePerson_6\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 75\u003cbr\u003eCentrality: 3.25"}, {"color": "red", "font": {"color": "black"}, "id": "Person_7", "label": "Person_7", "person_type": "suspect", "shape": "dot", "size": 45.14467650228902, "title": "\u003cb\u003ePerson_7\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 84\u003cbr\u003eCentrality: 4.28"}, {"color": "red", "font": {"color": "black"}, "id": "Person_8", "label": "Person_8", "person_type": "suspect", "shape": "dot", "size": 43.91914121914964, "title": "\u003cb\u003ePerson_8\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 94\u003cbr\u003eCentrality: 2.54"}, {"color": "red", "font": {"color": "black"}, "id": "Person_9", "label": "Person_9", "person_type": "suspect", "shape": "dot", "size": 42.74324989949056, "title": "\u003cb\u003ePerson_9\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 93\u003cbr\u003eCentrality: 2.10"}, {"color": "red", "font": {"color": "black"}, "id": "Person_10", "label": "Person_10", "person_type": "suspect", "shape": "dot", "size": 47.39067239461635, "title": "\u003cb\u003ePerson_10\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 89\u003cbr\u003eCentrality: 4.75"}, {"color": "red", "font": {"color": "black"}, "id": "Person_11", "label": "Person_11", "person_type": "suspect", "shape": "dot", "size": 41.95321018331228, "title": "\u003cb\u003ePerson_11\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 70\u003cbr\u003eCentrality: 4.42"}, {"color": "red", "font": {"color": "black"}, "id": "Person_12", "label": "Person_12", "person_type": "suspect", "shape": "dot", "size": 38.80518815511411, "title": "\u003cb\u003ePerson_12\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 79\u003cbr\u003eCentrality: 1.90"}, {"color": "red", "font": {"color": "black"}, "id": "Person_13", "label": "Person_13", "person_type": "suspect", "shape": "dot", "size": 45.89290301659588, "title": "\u003cb\u003ePerson_13\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 70\u003cbr\u003eCentrality: 6.27"}, {"color": "blue", "font": {"color": "black"}, "id": "Person_14", "label": "Person_14", "person_type": "legitimate", "shape": "dot", "size": 27.236356374275196, "title": "\u003cb\u003ePerson_14\u003c/b\u003e\u003cbr\u003eType: legitimate\u003cbr\u003eRisk: 16\u003cbr\u003eCentrality: 3.85"}, {"color": "blue", "font": {"color": "black"}, "id": "Person_15", "label": "Person_15", "person_type": "legitimate", "shape": "dot", "size": 24.173712889860234, "title": "\u003cb\u003ePerson_15\u003c/b\u003e\u003cbr\u003eType: legitimate\u003cbr\u003eRisk: 24\u003cbr\u003eCentrality: 1.49"}, {"color": "blue", "font": {"color": "black"}, "id": "Person_16", "label": "Person_16", "person_type": "legitimate", "shape": "dot", "size": 23.991219853921237, "title": "\u003cb\u003ePerson_16\u003c/b\u003e\u003cbr\u003eType: legitimate\u003cbr\u003eRisk: 16\u003cbr\u003eCentrality: 2.34"}, {"color": "red", "font": {"color": "black"}, "id": "Person_0", "label": "Person_0", "person_type": "suspect", "shape": "dot", "size": 46.11109310334395, "title": "\u003cb\u003ePerson_0\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 91\u003cbr\u003eCentrality: 3.91"}, {"color": "red", "font": {"color": "black"}, "id": "Person_1", "label": "Person_1", "person_type": "suspect", "shape": "dot", "size": 38.84437311076464, "title": "\u003cb\u003ePerson_1\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 83\u003cbr\u003eCentrality: 1.45"}, {"color": "red", "font": {"color": "black"}, "id": "Person_2", "label": "Person_2", "person_type": "suspect", "shape": "dot", "size": 61.5, "title": "\u003cb\u003ePerson_2\u003c/b\u003e\u003cbr\u003eType: suspect\u003cbr\u003eRisk: 86\u003cbr\u003eCentrality: 11.70"}, {"color": "blue", "font": {"color": "black"}, "id": "Person_17", "label": "Person_17", "person_type": "legitimate", "shape": "dot", "size": 21.66499738224473, "title": "\u003cb\u003ePerson_17\u003c/b\u003e\u003cbr\u003eType: legitimate\u003cbr\u003eRisk: 16\u003cbr\u003eCentrality: 1.25"}, {"color": "blue", "font": {"color": "black"}, "id": "Person_18", "label": "Person_18", "person_type": "legitimate", "shape": "dot", "size": 25.35178348779565, "title": "\u003cb\u003ePerson_18\u003c/b\u003e\u003cbr\u003eType: legitimate\u003cbr\u003eRisk: 29\u003cbr\u003eCentrality: 1.45"}, {"color": "blue", "font": {"color": "black"}, "id": "Person_19", "label": "Person_19", "person_type": "legitimate", "shape": "dot", "size": 25.030456650074136, "title": "\u003cb\u003ePerson_19\u003c/b\u003e\u003cbr\u003eType: legitimate\u003cbr\u003eRisk: 29\u003cbr\u003eCentrality: 1.30"}]);
+                  edges = new vis.DataSet([{"color": "green", "dash": false, "from": "Person_4", "title": "TRANSACTS_WITH", "to": "Person_3", "width": 3}, {"color": "green", "dash": false, "from": "Person_6", "title": "TRANSACTS_WITH", "to": "Person_3", "width": 3}, {"color": "green", "dash": false, "from": "Person_7", "title": "TRANSACTS_WITH", "to": "Person_3", "width": 3}, {"color": "green", "dash": false, "from": "Person_8", "title": "TRANSACTS_WITH", "to": "Person_3", "width": 3}, {"color": "green", "dash": false, "from": "Person_10", "title": "TRANSACTS_WITH", "to": "Person_3", "width": 3}, {"color": "green", "dash": false, "from": "Person_12", "title": "TRANSACTS_WITH", "to": "Person_3", "width": 3}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_3", "width": 3}, {"color": "green", "dash": false, "from": "Person_1", "title": "TRANSACTS_WITH", "to": "Person_3", "width": 3}, {"color": "gray", "dash": false, "from": "Person_9", "title": "COMMUNICATES", "to": "Person_3", "width": 1}, {"color": "gray", "dash": false, "from": "Person_11", "title": "COMMUNICATES", "to": "Person_3", "width": 1}, {"color": "gray", "dash": false, "from": "Person_13", "title": "COMMUNICATES", "to": "Person_3", "width": 1}, {"color": "gray", "dash": false, "from": "Person_16", "title": "COMMUNICATES", "to": "Person_3", "width": 1}, {"color": "gray", "dash": false, "from": "Person_18", "title": "COMMUNICATES", "to": "Person_3", "width": 1}, {"color": "gray", "dash": false, "from": "Person_2", "title": "COMMUNICATES", "to": "Person_3", "width": 1}, {"color": "orange", "dash": true, "from": "Person_15", "title": "TRUSTS", "to": "Person_3", "width": 2}, {"color": "green", "dash": false, "from": "Person_5", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_6", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_8", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_9", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_10", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_11", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_7", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_1", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_4", "width": 3}, {"color": "green", "dash": false, "from": "Person_6", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "green", "dash": false, "from": "Person_7", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "green", "dash": false, "from": "Person_8", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "green", "dash": false, "from": "Person_10", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "green", "dash": false, "from": "Person_11", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "green", "dash": false, "from": "Person_12", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "green", "dash": false, "from": "Person_1", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_5", "width": 3}, {"color": "gray", "dash": false, "from": "Person_13", "title": "COMMUNICATES", "to": "Person_5", "width": 1}, {"color": "gray", "dash": false, "from": "Person_14", "title": "COMMUNICATES", "to": "Person_5", "width": 1}, {"color": "orange", "dash": true, "from": "Person_19", "title": "TRUSTS", "to": "Person_5", "width": 2}, {"color": "green", "dash": false, "from": "Person_9", "title": "TRANSACTS_WITH", "to": "Person_6", "width": 3}, {"color": "green", "dash": false, "from": "Person_10", "title": "TRANSACTS_WITH", "to": "Person_6", "width": 3}, {"color": "green", "dash": false, "from": "Person_11", "title": "TRANSACTS_WITH", "to": "Person_6", "width": 3}, {"color": "green", "dash": false, "from": "Person_12", "title": "TRANSACTS_WITH", "to": "Person_6", "width": 3}, {"color": "green", "dash": false, "from": "Person_1", "title": "TRANSACTS_WITH", "to": "Person_6", "width": 3}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_6", "width": 3}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_6", "width": 3}, {"color": "gray", "dash": false, "from": "Person_8", "title": "COMMUNICATES", "to": "Person_6", "width": 1}, {"color": "gray", "dash": false, "from": "Person_13", "title": "COMMUNICATES", "to": "Person_6", "width": 1}, {"color": "gray", "dash": false, "from": "Person_15", "title": "COMMUNICATES", "to": "Person_6", "width": 1}, {"color": "green", "dash": false, "from": "Person_8", "title": "TRANSACTS_WITH", "to": "Person_7", "width": 3}, {"color": "green", "dash": false, "from": "Person_9", "title": "TRANSACTS_WITH", "to": "Person_7", "width": 3}, {"color": "green", "dash": false, "from": "Person_11", "title": "TRANSACTS_WITH", "to": "Person_7", "width": 3}, {"color": "green", "dash": false, "from": "Person_12", "title": "TRANSACTS_WITH", "to": "Person_7", "width": 3}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_7", "width": 3}, {"color": "green", "dash": false, "from": "Person_1", "title": "TRANSACTS_WITH", "to": "Person_7", "width": 3}, {"color": "gray", "dash": false, "from": "Person_15", "title": "COMMUNICATES", "to": "Person_7", "width": 1}, {"color": "gray", "dash": false, "from": "Person_17", "title": "COMMUNICATES", "to": "Person_7", "width": 1}, {"color": "gray", "dash": false, "from": "Person_2", "title": "COMMUNICATES", "to": "Person_7", "width": 1}, {"color": "orange", "dash": true, "from": "Person_19", "title": "TRUSTS", "to": "Person_7", "width": 2}, {"color": "green", "dash": false, "from": "Person_10", "title": "TRANSACTS_WITH", "to": "Person_8", "width": 3}, {"color": "green", "dash": false, "from": "Person_11", "title": "TRANSACTS_WITH", "to": "Person_8", "width": 3}, {"color": "green", "dash": false, "from": "Person_12", "title": "TRANSACTS_WITH", "to": "Person_8", "width": 3}, {"color": "green", "dash": false, "from": "Person_13", "title": "TRANSACTS_WITH", "to": "Person_8", "width": 3}, {"color": "green", "dash": false, "from": "Person_14", "title": "TRANSACTS_WITH", "to": "Person_8", "width": 3}, {"color": "green", "dash": false, "from": "Person_12", "title": "TRANSACTS_WITH", "to": "Person_9", "width": 3}, {"color": "green", "dash": false, "from": "Person_13", "title": "TRANSACTS_WITH", "to": "Person_9", "width": 3}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_9", "width": 3}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_9", "width": 3}, {"color": "gray", "dash": false, "from": "Person_10", "title": "COMMUNICATES", "to": "Person_9", "width": 1}, {"color": "gray", "dash": false, "from": "Person_14", "title": "COMMUNICATES", "to": "Person_9", "width": 1}, {"color": "gray", "dash": false, "from": "Person_19", "title": "COMMUNICATES", "to": "Person_9", "width": 1}, {"color": "green", "dash": false, "from": "Person_13", "title": "TRANSACTS_WITH", "to": "Person_10", "width": 3}, {"color": "green", "dash": false, "from": "Person_16", "title": "TRANSACTS_WITH", "to": "Person_10", "width": 3}, {"color": "green", "dash": false, "from": "Person_1", "title": "TRANSACTS_WITH", "to": "Person_10", "width": 3}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_10", "width": 3}, {"color": "gray", "dash": false, "from": "Person_19", "title": "COMMUNICATES", "to": "Person_10", "width": 1}, {"color": "orange", "dash": true, "from": "Person_18", "title": "TRUSTS", "to": "Person_10", "width": 2}, {"color": "green", "dash": false, "from": "Person_13", "title": "TRANSACTS_WITH", "to": "Person_11", "width": 3}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_11", "width": 3}, {"color": "gray", "dash": false, "from": "Person_12", "title": "COMMUNICATES", "to": "Person_11", "width": 1}, {"color": "gray", "dash": false, "from": "Person_16", "title": "COMMUNICATES", "to": "Person_11", "width": 1}, {"color": "gray", "dash": false, "from": "Person_18", "title": "COMMUNICATES", "to": "Person_11", "width": 1}, {"color": "gray", "dash": false, "from": "Person_19", "title": "COMMUNICATES", "to": "Person_11", "width": 1}, {"color": "orange", "dash": true, "from": "Person_1", "title": "TRUSTS", "to": "Person_11", "width": 2}, {"color": "orange", "dash": true, "from": "Person_2", "title": "TRUSTS", "to": "Person_11", "width": 2}, {"color": "green", "dash": false, "from": "Person_13", "title": "TRANSACTS_WITH", "to": "Person_12", "width": 3}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_12", "width": 3}, {"color": "green", "dash": false, "from": "Person_1", "title": "TRANSACTS_WITH", "to": "Person_12", "width": 3}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_12", "width": 3}, {"color": "gray", "dash": false, "from": "Person_14", "title": "COMMUNICATES", "to": "Person_12", "width": 1}, {"color": "green", "dash": false, "from": "Person_0", "title": "TRANSACTS_WITH", "to": "Person_13", "width": 3}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_13", "width": 3}, {"color": "green", "dash": false, "from": "Person_17", "title": "TRANSACTS_WITH", "to": "Person_13", "width": 3}, {"color": "gray", "dash": false, "from": "Person_14", "title": "COMMUNICATES", "to": "Person_13", "width": 1}, {"color": "gray", "dash": false, "from": "Person_15", "title": "COMMUNICATES", "to": "Person_13", "width": 1}, {"color": "gray", "dash": false, "from": "Person_16", "title": "COMMUNICATES", "to": "Person_13", "width": 1}, {"color": "gray", "dash": false, "from": "Person_19", "title": "COMMUNICATES", "to": "Person_13", "width": 1}, {"color": "green", "dash": false, "from": "Person_15", "title": "TRANSACTS_WITH", "to": "Person_14", "width": 3}, {"color": "green", "dash": false, "from": "Person_16", "title": "TRANSACTS_WITH", "to": "Person_14", "width": 3}, {"color": "green", "dash": false, "from": "Person_17", "title": "TRANSACTS_WITH", "to": "Person_14", "width": 3}, {"color": "green", "dash": false, "from": "Person_19", "title": "TRANSACTS_WITH", "to": "Person_14", "width": 3}, {"color": "gray", "dash": false, "from": "Person_2", "title": "COMMUNICATES", "to": "Person_14", "width": 1}, {"color": "green", "dash": false, "from": "Person_16", "title": "TRANSACTS_WITH", "to": "Person_15", "width": 3}, {"color": "green", "dash": false, "from": "Person_17", "title": "TRANSACTS_WITH", "to": "Person_15", "width": 3}, {"color": "gray", "dash": false, "from": "Person_2", "title": "COMMUNICATES", "to": "Person_15", "width": 1}, {"color": "green", "dash": false, "from": "Person_18", "title": "TRANSACTS_WITH", "to": "Person_16", "width": 3}, {"color": "green", "dash": false, "from": "Person_19", "title": "TRANSACTS_WITH", "to": "Person_16", "width": 3}, {"color": "orange", "dash": true, "from": "Person_2", "title": "TRUSTS", "to": "Person_16", "width": 2}, {"color": "green", "dash": false, "from": "Person_1", "title": "TRANSACTS_WITH", "to": "Person_0", "width": 3}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_0", "width": 3}, {"color": "green", "dash": false, "from": "Person_17", "title": "TRANSACTS_WITH", "to": "Person_0", "width": 3}, {"color": "orange", "dash": true, "from": "Person_18", "title": "TRUSTS", "to": "Person_0", "width": 2}, {"color": "green", "dash": false, "from": "Person_2", "title": "TRANSACTS_WITH", "to": "Person_1", "width": 3}, {"color": "green", "dash": false, "from": "Person_19", "title": "TRANSACTS_WITH", "to": "Person_1", "width": 3}, {"color": "gray", "dash": false, "from": "Person_17", "title": "COMMUNICATES", "to": "Person_2", "width": 1}, {"color": "orange", "dash": true, "from": "Person_18", "title": "TRUSTS", "to": "Person_2", "width": 2}, {"color": "orange", "dash": true, "from": "Person_19", "title": "TRUSTS", "to": "Person_2", "width": 2}, {"color": "green", "dash": false, "from": "Person_18", "title": "TRANSACTS_WITH", "to": "Person_17", "width": 3}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.01,
+            "damping": 0.4,
+            "gravitationalConstant": -50,
+            "springConstant": 0.08,
+            "springLength": 100
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    
+    <div style="position:fixed; top:10px; left:10px; width:180px; background:white; border:1px solid #ccc; padding:10px; z-index:9999;">
+        <h4>Filter</h4>
+        <button onclick="toggleLegit()">Vis/Skjul legitime</button>
+    </div>
+    <script type="text/javascript">
+        function toggleLegit() {
+            var nodes = network.body.nodes;
+            for (var id in nodes) {
+                var node = nodes[id];
+                if (node.options.person_type === 'legitimate') {
+                    node.options.hidden = !node.options.hidden;
+                    node.update();
+                }
+            }
+        }
+    </script>
+    </body>
+</html>
