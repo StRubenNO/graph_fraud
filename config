@@ -1,0 +1,40 @@
+
+ServerAliveInterval 600
+ServerAliveCountMax 2
+ControlMaster auto
+ControlPath ~/.ssh/sockets/%r@%h:%p
+
+Host *
+    UseKeychain yes
+
+
+
+Host restricted-sftp
+    HostName 10.181.55.244
+    User to923348
+    Port 2222 
+
+
+
+Host tra
+	User oeambjkv
+	IdentityFile ~/.ssh/id_ed25519
+	HostName ssh.tru.telenor.net
+	DynamicForward 1080
+	ServerAliveInterval 600
+
+# For login and SOCKS5 Proxy for web
+Host gitlab-proxy
+	HostName nest-git01.nsc.no
+	IdentityFile ~/.ssh/id_ed25519 
+	DynamicForward 1151
+	ProxyJump tra
+	IdentitiesOnly yes
+	ServerAliveInterval 600
+
+# For git ssh
+# Hostname	        nest-git01.nsc.no
+# Port 2222
+Host nest-git01.nsc.no nest-git01
+	IdentityFile ~/.ssh/id_ed25519
+	ProxyJump gitlab-proxy
